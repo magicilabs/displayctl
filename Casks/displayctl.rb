@@ -15,8 +15,8 @@
 # Users then run:
 #   brew install --cask magici-labs/tap/displayctl
 cask "displayctl" do
-  version "0.1.2"
-  sha256 "4e61ebd84d16b7207d8d340f4a6dcd43a4c8d913e28baae3b34c75d4d1ab903b"
+  version "0.1.3"
+  sha256 "baa56f37ca26b6b6e24cb15998f8744c5847a9bc3120d9a999378725a33e5675"
 
   url "https://github.com/Magici-Labs/displayctl/releases/download/v#{version}/DisplayCtl-#{version}.zip"
   name "DisplayCtl"
