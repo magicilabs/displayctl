@@ -1,5 +1,5 @@
 // Renders the app icon, icon/icon.png: a white display with sparkles on a
-// blue rounded square, on the standard macOS icon grid.
+// navy rounded square, on the standard macOS icon grid.
 //
 //   swift icon/make-icon.swift
 //
@@ -31,8 +31,8 @@ shape.fill()
 NSGraphicsContext.restoreGraphicsState()
 
 NSGradient(
-    starting: NSColor(srgbRed: 0.24, green: 0.56, blue: 1.00, alpha: 1),
-    ending: NSColor(srgbRed: 0.20, green: 0.22, blue: 0.75, alpha: 1)
+    starting: NSColor(srgbRed: 0.13, green: 0.25, blue: 0.60, alpha: 1),
+    ending: NSColor(srgbRed: 0.06, green: 0.09, blue: 0.32, alpha: 1)
 )!.draw(in: shape, angle: -90)
 
 func symbol(_ name: String, _ pointSize: CGFloat, _ color: NSColor) -> NSImage {
