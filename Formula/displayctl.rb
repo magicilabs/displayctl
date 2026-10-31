@@ -8,20 +8,20 @@
 # To publish:
 #   1. push this repo to GitHub
 #   2. tag v0.1.0, then get the checksum with
-#      curl -sL https://github.com/Magici-Labs/displayctl/archive/refs/tags/v0.1.0.tar.gz | shasum -a 256
+#      curl -sL https://github.com/magicilabs/displayctl/archive/refs/tags/v0.1.0.tar.gz | shasum -a 256
 #   3. paste it below and put this file in the Formula directory of a tap repo
 #      named homebrew-tap
 #
 # Users then run:
-#   brew install magici-labs/tap/displayctl
+#   brew install magicilabs/tap/displayctl
 #   brew services start displayctl
 class Displayctl < Formula
   desc "Menu bar app and CLI to connect, disconnect and control macOS displays"
-  homepage "https://github.com/Magici-Labs/displayctl"
-  url "https://github.com/Magici-Labs/displayctl/archive/refs/tags/v0.1.5.tar.gz"
+  homepage "https://github.com/magicilabs/displayctl"
+  url "https://github.com/magicilabs/displayctl/archive/refs/tags/v0.1.5.tar.gz"
   sha256 "673c6de17d5efa8ecfe05661508502989ff0fbafa4d8e8fcef43f720864041a2"
   license "MIT"
-  head "https://github.com/Magici-Labs/displayctl.git", branch: "main"
+  head "https://github.com/magicilabs/displayctl.git", branch: "main"
 
   depends_on "go" => :build
   depends_on arch: :arm64 # display control uses Apple Silicon APIs

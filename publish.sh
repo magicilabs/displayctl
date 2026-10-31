@@ -14,13 +14,13 @@ set -e
 
 cd "$(dirname "$0")"
 VERSION="${1:-0.1.0}"
-REPO="Magici-Labs/displayctl"
+REPO="magicilabs/displayctl"
 ZIP="dist/DisplayCtl-$VERSION.zip"
 
 command -v gh >/dev/null || { echo "install the GitHub CLI first: brew install gh" >&2; exit 1; }
 gh auth status >/dev/null 2>&1 || { echo "sign in first: gh auth login" >&2; exit 1; }
 # Releases show the account that created them, so make sure it is the right one.
-[ "$(gh api user --jq .login)" = magicilabs ] || { echo "switch first: gh auth switch -u magicilabs" >&2; exit 1; }
+[ "$(gh api user --jq .login)" = magicilabs-admin ] || { echo "switch first: gh auth switch -u magicilabs-admin" >&2; exit 1; }
 git remote get-url origin >/dev/null 2>&1 || {
 	echo "no git remote. create the repo, then:" >&2
 	echo "  git remote add origin git@github.com:$REPO.git" >&2
@@ -85,4 +85,4 @@ fi
 
 echo
 echo "released v$VERSION  sha256=$SHA"
-echo "install with: brew install --cask magici-labs/tap/displayctl"
+echo "install with: brew install --cask magicilabs/tap/displayctl"
