@@ -92,10 +92,13 @@ rather than making a second copy.
 
 ## Releasing
 
-`./publish.sh 0.1.0` builds the app, zips it, tags, pushes, creates the GitHub
-release with the zip attached, and updates the cask with the new version and
-checksum. It needs the GitHub CLI (`brew install gh && gh auth login`), and
-updates `../homebrew-tap` too when that repo is checked out beside this one.
+Run `./publish.sh 0.1.6` from an up to date main. It builds the app, signs it
+with the Developer ID, has Apple notarize it, tags the commit, creates the
+GitHub release with the zip attached, and opens a pull request on
+`../homebrew-tap` with the cask and formula for the new version. Merge that
+pull request to ship it. It needs the GitHub CLI signed in as
+magicilabs-admin, a Developer ID Application certificate, a notarytool profile
+called `magicilabs`, and homebrew-tap checked out beside this repo.
 
 ## Connect and disconnect
 
