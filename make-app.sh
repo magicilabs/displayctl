@@ -6,6 +6,13 @@ set -e
 cd "$(dirname "$0")"
 APP=DisplayCtl.app
 
+# The C and Objective-C parts are built for whatever macOS this Mac runs
+# unless told otherwise, and the app then refuses to open on anything older.
+# Match LSMinimumSystemVersion below.
+export MACOSX_DEPLOYMENT_TARGET=13.0
+export CGO_CFLAGS="-mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET"
+export CGO_LDFLAGS="-mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET"
+
 # -trimpath keeps local file paths out of the shipped binary.
 go build -trimpath -ldflags "-s -w" -o displayctl .
 
@@ -50,7 +57,7 @@ cat > "$APP/Contents/Info.plist" <<EOF
 	<key>CFBundleIconFile</key><string>AppIcon</string>
 	<key>CFBundlePackageType</key><string>APPL</string>
 	<key>CFBundleShortVersionString</key><string>${VERSION:-0.1.0}</string>
-	<key>LSMinimumSystemVersion</key><string>13.0</string>
+	<key>LSMinimumSystemVersion</key><string>$MACOSX_DEPLOYMENT_TARGET</string>
 	<key>LSUIElement</key><true/>
 </dict>
 </plist>
