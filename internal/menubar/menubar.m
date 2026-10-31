@@ -82,6 +82,14 @@ static NSImage *menuIcon(void) {
 
     [menu addItem:[NSMenuItem separatorItem]];
     menubarLogin(); // Go calls mb_add_login
+    [menu addItem:[NSMenuItem separatorItem]];
+    // Greyed out, with no action. Builds without an app bundle (brew services)
+    // have no version to show.
+    NSString *version = [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *title = version ? [NSString stringWithFormat:@"Magici Labs DisplayCtl %@", version] : @"Magici Labs DisplayCtl";
+    NSMenuItem *about = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
+    about.enabled = NO;
+    [menu addItem:about];
     NSMenuItem *quit = [[NSMenuItem alloc] initWithTitle:@"Quit"
                                                   action:@selector(quit:)
                                            keyEquivalent:@"q"];
