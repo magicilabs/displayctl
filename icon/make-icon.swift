@@ -1,5 +1,5 @@
-// Renders the app icon, icon/icon.png: the menu bar's "display" symbol in
-// white on a blue rounded square, on the standard macOS icon grid.
+// Renders the app icon, icon/icon.png: a white display with sparkles on a
+// blue rounded square, on the standard macOS icon grid.
 //
 //   swift icon/make-icon.swift
 //
@@ -35,13 +35,25 @@ NSGradient(
     ending: NSColor(srgbRed: 0.20, green: 0.22, blue: 0.75, alpha: 1)
 )!.draw(in: shape, angle: -90)
 
-let config = NSImage.SymbolConfiguration(pointSize: 440, weight: .regular)
-    .applying(NSImage.SymbolConfiguration(hierarchicalColor: .white))
-let symbol = NSImage(systemSymbolName: "display", accessibilityDescription: nil)!
-    .withSymbolConfiguration(config)!
-let s = symbol.size
-symbol.draw(in: NSRect(x: tile.midX - s.width / 2, y: tile.midY - s.height / 2,
-                       width: s.width, height: s.height))
+func symbol(_ name: String, _ pointSize: CGFloat, _ color: NSColor) -> NSImage {
+    let config = NSImage.SymbolConfiguration(pointSize: pointSize, weight: .regular)
+        .applying(NSImage.SymbolConfiguration(hierarchicalColor: color))
+    return NSImage(systemSymbolName: name, accessibilityDescription: nil)!.withSymbolConfiguration(config)!
+}
+
+// Drawn centred on a point.
+func draw(_ image: NSImage, at center: NSPoint) {
+    let s = image.size
+    image.draw(in: NSRect(x: center.x - s.width / 2, y: center.y - s.height / 2, width: s.width, height: s.height))
+}
+
+// The display, a little down and left to make room for the sparkles.
+draw(symbol("display", 420, .white), at: NSPoint(x: tile.midX - 30, y: tile.midY - 40))
+
+// Sparkles: a big one and a small one at the top right.
+let gold = NSColor(srgbRed: 1.00, green: 0.93, blue: 0.62, alpha: 1)
+draw(symbol("sparkle", 190, gold), at: NSPoint(x: tile.maxX - 175, y: tile.maxY - 175))
+draw(symbol("sparkle", 95, gold), at: NSPoint(x: tile.maxX - 310, y: tile.maxY - 105))
 
 NSGraphicsContext.current = nil
 let out = URL(fileURLWithPath: CommandLine.arguments[0])
