@@ -86,7 +86,7 @@ static NSImage *menuIcon(void) {
     // Greyed out, with no action. Builds without an app bundle (brew services)
     // have no version to show.
     NSString *version = [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    NSString *title = version ? [NSString stringWithFormat:@"Magici Labs DisplayCtl %@", version] : @"Magici Labs DisplayCtl";
+    NSString *title = version ? [NSString stringWithFormat:@"MagiciLabs DisplayCtl %@", version] : @"MagiciLabs DisplayCtl";
     NSMenuItem *about = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
     about.enabled = NO;
     [menu addItem:about];
