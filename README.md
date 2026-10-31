@@ -75,20 +75,11 @@ CLI into the Homebrew prefix:
 
 ```
 brew install --cask magici-labs/tap/displayctl
-xattr -dr com.apple.quarantine /Applications/DisplayCtl.app
 ```
 
 Use the full name, `magici-labs/tap/displayctl`. Homebrew 7 refuses to load
 anything from a tap you have not trusted when you ask for it by its short name;
 installing it by its full name trusts it, and taps the repo if needed.
-
-The `xattr` line is needed because the build is ad-hoc signed rather than
-notarized, so Gatekeeper refuses to run it while Homebrew's quarantine flag is
-set — the symptom is a "could not verify ... free of malware" dialog, or the
-CLI dying instantly with exit 137. Homebrew 7 removed the `--no-quarantine`
-option, so clearing the flag afterwards is the way. Signing with a Developer ID
-and notarizing removes the need for it, and needs a paid Apple Developer
-account.
 
 `Formula/displayctl.rb` builds from source instead and offers
 `brew services start displayctl`, with no app bundle and no Gatekeeper
@@ -135,8 +126,6 @@ file: `displayctl -d 1 connect`.
   seconds. Check with `betterdisplaycli get --name="..." --connected`.
 - **DDC needs a monitor that supports it.** Monitors with an NVIDIA G-SYNC
   module generally do not.
-- **Unsigned.** Released builds are ad-hoc signed, not notarized, so macOS
-  warns about them until they are cleared of quarantine.
 
 ## Credits
 

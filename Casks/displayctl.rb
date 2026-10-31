@@ -38,14 +38,6 @@ cask "displayctl" do
   ]
 
   caveats <<~EOS
-    This build is ad-hoc signed, not notarized, so Gatekeeper refuses to run it
-    while Homebrew's quarantine flag is set. Clear the flag after installing:
-
-      xattr -dr com.apple.quarantine /Applications/DisplayCtl.app
-
-    Homebrew 7 removed the --no-quarantine option, so this is the way.
-    Signing with a Developer ID and notarizing removes the need for it.
-
     To start it at login, tick Start at Login in its menu.
   EOS
 end

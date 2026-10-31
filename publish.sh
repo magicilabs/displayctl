@@ -4,6 +4,9 @@
 #
 #   ./publish.sh 0.1.0
 #
+# To sign with a Developer ID and notarize:
+#   SIGN_IDENTITY="Developer ID Application: ..." NOTARY_PROFILE=magicilabs ./publish.sh 0.1.0
+#
 # Needs the GitHub CLI:  brew install gh && gh auth login
 # If ../homebrew-tap exists, the updated cask and formula are copied and pushed
 # there too.
@@ -28,6 +31,16 @@ VERSION="$VERSION" ./make-app.sh >/dev/null
 mkdir -p dist
 rm -f "$ZIP"
 ditto -c -k --sequesterRsrc --keepParent DisplayCtl.app "$ZIP"
+
+# With a Developer ID signature and a notarytool profile, have Apple notarize
+# the app and staple the ticket to it, so Gatekeeper opens it without asking.
+# Stapling fails unless notarization was accepted, which stops the release.
+if [ -n "$NOTARY_PROFILE" ]; then
+	xcrun notarytool submit "$ZIP" --keychain-profile "$NOTARY_PROFILE" --wait
+	xcrun stapler staple DisplayCtl.app
+	rm -f "$ZIP"
+	ditto -c -k --sequesterRsrc --keepParent DisplayCtl.app "$ZIP"
+fi
 SHA=$(shasum -a 256 "$ZIP" | cut -d' ' -f1)
 
 # Update the cask before tagging, so the tag holds the matching checksum.

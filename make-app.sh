@@ -58,8 +58,11 @@ EOF
 # Sign the whole bundle, not just the binary the Go linker already signs, or
 # macOS reports the app as not signed at all and calls the download damaged.
 # Ad-hoc ("-") by default; set SIGN_IDENTITY to a Developer ID Application
-# certificate to sign for distribution (notarizing is a separate step).
-codesign --force --deep --options runtime \
+# certificate to sign for distribution (notarizing is a separate step, and
+# needs the secure timestamp that ad-hoc signing cannot have).
+TIMESTAMP=
+[ "${SIGN_IDENTITY:--}" = - ] || TIMESTAMP=--timestamp
+codesign --force --deep --options runtime $TIMESTAMP \
 	-s "${SIGN_IDENTITY:--}" -i local.displayctl "$APP"
 
 echo "built $(pwd)/$APP"
