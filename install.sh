@@ -39,7 +39,8 @@ cat > "$PLIST" <<EOF
 	<key>Label</key><string>$LABEL</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>$DEST/Contents/MacOS/DisplayCtl</string>
+		<string>$DEST/Contents/MacOS/displayctl-bin</string>
+		<string>menu</string>
 	</array>
 	<key>RunAtLoad</key><true/>
 	<key>ProcessType</key><string>Interactive</string>

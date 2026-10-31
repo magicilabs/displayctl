@@ -9,9 +9,11 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 	"text/tabwriter"
 
 	"displayctl/internal/display"
@@ -50,14 +52,46 @@ func main() {
 	sel := flag.String("d", "", "display ID, UUID prefix, or part of its name")
 	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
 	flag.Parse()
-	if flag.NArg() == 0 {
+	args := flag.Args()
+	if len(args) == 0 && openedAsApp() {
+		logToFile()
+		args = []string{"menu"}
+	}
+	if len(args) == 0 {
 		flag.Usage()
 		os.Exit(2)
 	}
-	if err := run(*sel, flag.Arg(0), flag.Args()[1:]); err != nil {
+	if err := run(*sel, args[0], args[1:]); err != nil {
 		fmt.Fprintln(os.Stderr, "displayctl:", err)
 		os.Exit(1)
 	}
+}
+
+// openedAsApp reports whether this is DisplayCtl.app being opened from Finder,
+// which runs the bundle's binary with no arguments. The binary is the bundle's
+// own executable, not a script wrapping it, because macOS only shows a menu
+// bar icon from an app it can tie to the process that made it. Launched apps
+// are children of launchd; the same binary run bare from a terminal is not,
+// and prints usage as before.
+func openedAsApp() bool {
+	exe, err := os.Executable()
+	return err == nil && strings.HasSuffix(filepath.Dir(exe), ".app/Contents/MacOS") && os.Getppid() == 1
+}
+
+// logToFile sends output to ~/Library/Logs/displayctl.log, since an app opened
+// from Finder has no terminal, and the log is where to look when the icon does
+// not appear.
+func logToFile() {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return
+	}
+	f, err := os.OpenFile(filepath.Join(home, "Library", "Logs", "displayctl.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o644)
+	if err != nil {
+		return
+	}
+	syscall.Dup2(int(f.Fd()), 1)
+	syscall.Dup2(int(f.Fd()), 2)
 }
 
 func run(sel, cmd string, args []string) error {

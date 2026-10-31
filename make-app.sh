@@ -16,7 +16,8 @@ mkdir -p "$APP/Contents/MacOS"
 # overwrite the other.
 cp displayctl "$APP/Contents/MacOS/displayctl-bin"
 
-# The bundle launches with no arguments, so a one-line launcher supplies them.
+# Opened from Finder, displayctl-bin runs the menu itself. This launcher only
+# remains for login agents written by older versions, which point at it.
 cat > "$APP/Contents/MacOS/DisplayCtl" <<'EOF'
 #!/bin/sh
 # Launched with no terminal attached, so keep a log to look at when something
@@ -45,7 +46,7 @@ cat > "$APP/Contents/Info.plist" <<EOF
 	<key>CFBundleName</key><string>DisplayCtl</string>
 	<key>CFBundleDisplayName</key><string>DisplayCtl</string>
 	<key>CFBundleIdentifier</key><string>local.displayctl</string>
-	<key>CFBundleExecutable</key><string>DisplayCtl</string>
+	<key>CFBundleExecutable</key><string>displayctl-bin</string>
 	<key>CFBundleIconFile</key><string>AppIcon</string>
 	<key>CFBundlePackageType</key><string>APPL</string>
 	<key>CFBundleShortVersionString</key><string>${VERSION:-0.1.0}</string>

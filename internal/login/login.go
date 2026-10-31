@@ -57,13 +57,7 @@ func Enable() error {
 	if err != nil {
 		return err
 	}
-	// Inside DisplayCtl.app, start the bundle's launcher, which keeps a log.
 	args := []string{exe, "menu"}
-	if dir := filepath.Dir(exe); strings.HasSuffix(dir, ".app/Contents/MacOS") {
-		if launcher := filepath.Join(dir, "DisplayCtl"); exists(launcher) {
-			args = []string{launcher}
-		}
-	}
 
 	home, _ := os.UserHomeDir()
 	logPath := filepath.Join(home, "Library", "Logs", "displayctl.log")
