@@ -74,10 +74,10 @@ runs with no terminal attached.
 CLI into the Homebrew prefix:
 
 ```
-brew install --cask magici-labs/tap/displayctl
+brew install --cask magicilabs/tap/displayctl
 ```
 
-Use the full name, `magici-labs/tap/displayctl`. Homebrew 7 refuses to load
+Use the full name, `magicilabs/tap/displayctl`. Homebrew 7 refuses to load
 anything from a tap you have not trusted when you ask for it by its short name;
 installing it by its full name trusts it, and taps the repo if needed.
 

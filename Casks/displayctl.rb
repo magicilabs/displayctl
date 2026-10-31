@@ -13,15 +13,15 @@
 #   4. put this file in the Casks directory of a tap repo named homebrew-tap
 #
 # Users then run:
-#   brew install --cask magici-labs/tap/displayctl
+#   brew install --cask magicilabs/tap/displayctl
 cask "displayctl" do
   version "0.1.5"
   sha256 "24fb7074a9006eeb1d4f1fb3069f151074cc72b26b9f5492e2179404e901fa6d"
 
-  url "https://github.com/Magici-Labs/displayctl/releases/download/v#{version}/DisplayCtl-#{version}.zip"
+  url "https://github.com/magicilabs/displayctl/releases/download/v#{version}/DisplayCtl-#{version}.zip"
   name "DisplayCtl"
   desc "Menu bar app and CLI to connect, disconnect and control macOS displays"
-  homepage "https://github.com/Magici-Labs/displayctl"
+  homepage "https://github.com/magicilabs/displayctl"
 
   depends_on arch: :arm64
   depends_on macos: :ventura
