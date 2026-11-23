@@ -23,16 +23,12 @@ mkdir -p "$APP/Contents/MacOS"
 # overwrite the other.
 cp displayctl "$APP/Contents/MacOS/displayctl-bin"
 
-# Opened from Finder, displayctl-bin runs the menu itself. This launcher only
-# remains for login agents written by older versions, which point at it.
-cat > "$APP/Contents/MacOS/DisplayCtl" <<'EOF'
-#!/bin/sh
-# Launched with no terminal attached, so keep a log to look at when something
-# does not appear in the menu bar.
-LOG="$HOME/Library/Logs/displayctl.log"
-exec "$(dirname "$0")/displayctl-bin" menu >>"$LOG" 2>&1
-EOF
-chmod +x "$APP/Contents/MacOS/DisplayCtl"
+# Login agents written by older versions still point at MacOS/DisplayCtl, so
+# keep that name as a symlink to the binary. It used to be a shell script, but a
+# script keeps its signature in extended attributes, which unzip drops: the app
+# then fails verification and Gatekeeper refuses to open it. Started by launchd
+# with no arguments, the binary runs the menu on its own.
+ln -s displayctl-bin "$APP/Contents/MacOS/DisplayCtl"
 
 # Finder shows Contents/Resources/AppIcon.icns, built from icon/icon.png at
 # every size macOS asks for.
