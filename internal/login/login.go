@@ -32,13 +32,55 @@ func exists(path string) bool {
 
 // ByBrew reports whether `brew services` starts displayctl at login. It owns
 // that agent, so it is left to brew rather than changed from here.
+// An agent left behind after the formula was uninstalled points at a binary
+// that is gone; it starts nothing, so it does not count.
 func ByBrew() bool {
 	for _, l := range brewLabels {
-		if exists(agentPath(l)) {
+		if exe := agentProgram(agentPath(l)); exe != "" && exists(exe) {
 			return true
 		}
 	}
 	return false
+}
+
+// agentProgram returns the first ProgramArguments entry of a launchd plist,
+// or "" if the file is missing or has none.
+func agentProgram(path string) string {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return ""
+	}
+	d := xml.NewDecoder(bytes.NewReader(data))
+	var lastKey string
+	inArgs := false
+	for {
+		tok, err := d.Token()
+		if err != nil {
+			return ""
+		}
+		se, ok := tok.(xml.StartElement)
+		if !ok {
+			continue
+		}
+		switch se.Name.Local {
+		case "key":
+			var k string
+			if d.DecodeElement(&k, &se) != nil {
+				return ""
+			}
+			lastKey = k
+		case "array":
+			inArgs = lastKey == "ProgramArguments"
+		case "string":
+			var s string
+			if d.DecodeElement(&s, &se) != nil {
+				return ""
+			}
+			if inArgs {
+				return s
+			}
+		}
+	}
 }
 
 // Enabled reports whether displayctl starts at login, either way.
